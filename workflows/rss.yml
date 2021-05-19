@@ -19,3 +19,17 @@ jobs:
           consumer-secret: ${{ secrets.TWITTER_CONSUMER_SECRET }}
           access-token: ${{ secrets.TWITTER_ACCESS_TOKEN }}
           access-token-secret: ${{ secrets.TWITTER_ACCESS_SECRET }}
+  mastodon:
+    name: post2mastodon
+    runs-on: ubuntu-latest
+    steps:
+      - name: send to mastodon
+        uses: actionsflow/axios@v1
+        with:
+          url: ${{ secrets.MASTODON_POST_URL }}
+          method: 'POST'
+          accept: 200,201,204
+          content-type: application/x-www-form-urlencoded
+          data: 'status=${{on.rss.outputs.title}} 👉🏻${{on.rss.outputs.link}}'
+          timeout: 10000
+          is_debug: false
