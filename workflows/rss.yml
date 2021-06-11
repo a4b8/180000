@@ -28,7 +28,6 @@ jobs:
         with:
           url: ${{ secrets.MASTODON_POST_URL }}
           method: 'POST'
-          accept: 200,201,204
           content-type: application/x-www-form-urlencoded
           data: 'visibility=unlisted&status=${{on.rss.outputs.title}} 👉🏻${{on.rss.outputs.link}}'
           timeout: 10000
