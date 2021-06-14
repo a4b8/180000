@@ -2,6 +2,7 @@ on:
   rss:
     url: https://www.sakrum.de/feeds/posts/default?alt=rss
     config:
+      every: "0 16 * * *"
       limit: 5
       filter:
         content:
@@ -23,7 +24,7 @@ jobs:
     name: post2mastodon
     runs-on: ubuntu-latest
     steps:
-      - name: send to mastodon
+      - name: send to munich
         uses: actionsflow/axios@v1
         with:
           url: ${{ secrets.MASTODON_POST_URL }}
@@ -32,3 +33,16 @@ jobs:
           data: 'visibility=unlisted&status=${{on.rss.outputs.title}} 👉🏻${{on.rss.outputs.link}}'
           timeout: 10000
           is_debug: false
+  mastodon2:
+    name: post2mastodon2
+    runs-on: ubuntu-latest
+    steps:
+      - name: send to bayern
+        uses: actionsflow/axios@v1
+        with:
+          url: ${{ secrets.MASTODON_POST_URL_2 }}
+          method: 'POST'
+          content-type: application/x-www-form-urlencoded
+          data: 'visibility=unlisted&status=${{on.rss.outputs.title}} 👉🏻${{on.rss.outputs.link}}'
+          timeout: 10000
+          is_debug: false          
