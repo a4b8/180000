@@ -20,29 +20,13 @@ jobs:
           consumer-secret: ${{ secrets.TWITTER_CONSUMER_SECRET }}
           access-token: ${{ secrets.TWITTER_ACCESS_TOKEN }}
           access-token-secret: ${{ secrets.TWITTER_ACCESS_SECRET }}
-  mastodon:
-    name: post2mastodon
+  fediverse-mastodon:
+    name: send2mastodon
     runs-on: ubuntu-latest
     steps:
-      - name: send to munich
-        uses: actionsflow/axios@v1
+      - name: 'Call fediverse'
+        uses: rzr/fediverse-action@master
         with:
-          url: ${{ secrets.MASTODON_POST_URL }}
-          method: 'POST'
-          content-type: application/x-www-form-urlencoded
-          data: 'visibility=unlisted&status=${{on.rss.outputs.title}} 👉🏻${{on.rss.outputs.link}}'
-          timeout: 10000
-          is_debug: false
-  mastodon2:
-    name: post2mastodon2
-    runs-on: ubuntu-latest
-    steps:
-      - name: send to bayern
-        uses: actionsflow/axios@v1
-        with:
-          url: ${{ secrets.MASTODON_POST_URL_2 }}
-          method: 'POST'
-          content-type: application/x-www-form-urlencoded
-          data: 'visibility=unlisted&status=${{on.rss.outputs.title}} 👉🏻${{on.rss.outputs.link}}'
-          timeout: 10000
-          is_debug: false          
+          access-token: ${{ secrets.MASTODON_ACCESS_TOKEN }}
+          message: "${{on.rss.outputs.title}} 👉🏻${{on.rss.outputs.link}}"
+          host: "muenchen.social"
